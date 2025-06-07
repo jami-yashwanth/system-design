@@ -22,7 +22,7 @@ class Road {
     public void setTrafficLight(TrafficLight trafficLight) {
         this.trafficLight = trafficLight;
     }
-    
+
     public TrafficLight getTrafficLight() {
         return this.trafficLight;
     }
@@ -74,7 +74,7 @@ class TrafficController {
 
     private TrafficController() {
     }
-    
+
     public static TrafficController getInstance() {
         if (instance == null) {
             instance = new TrafficController();
@@ -82,15 +82,17 @@ class TrafficController {
         return instance;
     }
 
-    public void setRoads(List<Road> roads){
+    public void setRoads(List<Road> roads) {
         this.roads = roads;
     }
 
     public void startControl() {
-        // In interview, mention it as basic implementation -> In real-case, we need to run all these parallelly 
+        // In interview, mention it as basic implementation -> In real-case, we need to
+        // run all these parallelly
         while (true) {
             if (emergencyDetected) {
-                // If emergency is detected, change road signals accordingly such that emergency road is green and others are red
+                // If emergency is detected, change road signals accordingly such that emergency
+                // road is green and others are red
                 System.out.println("\n⚠️ Emergency Mode Activated!");
                 for (Road road : roads) {
                     TrafficLight light = road.getTrafficLight();
@@ -106,17 +108,17 @@ class TrafficController {
                 emergencyRoad = null;
             } else {
                 for (Road road : roads) {
-                    // Get traffic light of road 
+                    // Get traffic light of road
                     TrafficLight trafficLight = road.getTrafficLight();
-    
+
                     // Change to green
                     trafficLight.changeSignal(Signal.GREEN);
                     sleepForSeconds(trafficLight.getSignalDuration(Signal.GREEN));
-                    
+
                     // Change to yellow
                     trafficLight.changeSignal(Signal.YELLOW);
                     sleepForSeconds(trafficLight.getSignalDuration(Signal.YELLOW));
-    
+
                     // Change to red
                     trafficLight.changeSignal(Signal.RED);
                     sleepForSeconds(trafficLight.getSignalDuration(Signal.RED));
@@ -124,7 +126,7 @@ class TrafficController {
             }
         }
     }
-    
+
     private void sleepForSeconds(int seconds) {
         try {
             Thread.sleep(seconds * 1000L);
@@ -162,67 +164,66 @@ class TrafficSingalControlSystem {
     }
 }
 
-
 /*
-
-UML Diagram
-
-+-------------------------------------------+
-|             TrafficController              |
-|               (Singleton)                  |
-+-------------------------------------------+
-| - instance: TrafficController              |
-| - roads: List<Road>                        |
-| - emergencyDetected: boolean               |
-| - emergencyRoad: Road                      |
-+-------------------------------------------+
-| + getInstance(): TrafficController         |
-| + setRoads(roads: List<Road>): void        |
-| + startControl(): void                     |
-| + handleEmergency(emergencyRoad: Road): void|
-+-------------------------------------------+
-
-                      ▲
-                      |
-                      |
-+-------------------------------------------+
-|                  Road                     |
-+-------------------------------------------+
-| - id: String                              |
-| - name: String                            |
-| - trafficLight: TrafficLight              |
-+-------------------------------------------+
-| + setTrafficLight(light: TrafficLight): void |
-| + getTrafficLight(): TrafficLight          |
-+-------------------------------------------+
-
-                      |
-                      |
-                      ▼
-+-------------------------------------------+
-|               TrafficLight                |
-+-------------------------------------------+
-| - id: String                              |
-| - currentSignal: Signal                   |
-| - redDuration: int                        |
-| - yellowDuration: int                     |
-| - greenDuration: int                      |
-+-------------------------------------------+
-| + changeSignal(newSignal: Signal): void   |
-| + getCurrentSignal(): Signal              |
-| + getSignalDuration(signal: Signal): int  |
-+-------------------------------------------+
-
-                      ▲
-                      |
-                      |
-+-------------------------------------------+
-|                 Signal                     |
-|               (enum)                       |
-+-------------------------------------------+
-| + RED                                     |
-| + YELLOW                                  |
-| + GREEN                                   |
-+-------------------------------------------+
-
+ * 
+ * UML Diagram
+ * 
+ * +-------------------------------------------+
+ * | TrafficController |
+ * | (Singleton) |
+ * +-------------------------------------------+
+ * | - instance: TrafficController |
+ * | - roads: List<Road> |
+ * | - emergencyDetected: boolean |
+ * | - emergencyRoad: Road |
+ * +-------------------------------------------+
+ * | + getInstance(): TrafficController |
+ * | + setRoads(roads: List<Road>): void |
+ * | + startControl(): void |
+ * | + handleEmergency(emergencyRoad: Road): void|
+ * +-------------------------------------------+
+ * 
+ * ▲
+ * |
+ * |
+ * +-------------------------------------------+
+ * | Road |
+ * +-------------------------------------------+
+ * | - id: String |
+ * | - name: String |
+ * | - trafficLight: TrafficLight |
+ * +-------------------------------------------+
+ * | + setTrafficLight(light: TrafficLight): void |
+ * | + getTrafficLight(): TrafficLight |
+ * +-------------------------------------------+
+ * 
+ * |
+ * |
+ * ▼
+ * +-------------------------------------------+
+ * | TrafficLight |
+ * +-------------------------------------------+
+ * | - id: String |
+ * | - currentSignal: Signal |
+ * | - redDuration: int |
+ * | - yellowDuration: int |
+ * | - greenDuration: int |
+ * +-------------------------------------------+
+ * | + changeSignal(newSignal: Signal): void |
+ * | + getCurrentSignal(): Signal |
+ * | + getSignalDuration(signal: Signal): int |
+ * +-------------------------------------------+
+ * 
+ * ▲
+ * |
+ * |
+ * +-------------------------------------------+
+ * | Signal |
+ * | (enum) |
+ * +-------------------------------------------+
+ * | + RED |
+ * | + YELLOW |
+ * | + GREEN |
+ * +-------------------------------------------+
+ * 
  */
