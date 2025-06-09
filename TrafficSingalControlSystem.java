@@ -165,65 +165,106 @@ class TrafficSingalControlSystem {
 }
 
 /*
- * 
- * UML Diagram
- * 
- * +-------------------------------------------+
- * | TrafficController |
- * | (Singleton) |
- * +-------------------------------------------+
- * | - instance: TrafficController |
- * | - roads: List<Road> |
- * | - emergencyDetected: boolean |
- * | - emergencyRoad: Road |
- * +-------------------------------------------+
- * | + getInstance(): TrafficController |
- * | + setRoads(roads: List<Road>): void |
- * | + startControl(): void |
- * | + handleEmergency(emergencyRoad: Road): void|
- * +-------------------------------------------+
- * 
- * ▲
- * |
- * |
- * +-------------------------------------------+
- * | Road |
- * +-------------------------------------------+
- * | - id: String |
- * | - name: String |
- * | - trafficLight: TrafficLight |
- * +-------------------------------------------+
- * | + setTrafficLight(light: TrafficLight): void |
- * | + getTrafficLight(): TrafficLight |
- * +-------------------------------------------+
- * 
- * |
- * |
- * ▼
- * +-------------------------------------------+
- * | TrafficLight |
- * +-------------------------------------------+
- * | - id: String |
- * | - currentSignal: Signal |
- * | - redDuration: int |
- * | - yellowDuration: int |
- * | - greenDuration: int |
- * +-------------------------------------------+
- * | + changeSignal(newSignal: Signal): void |
- * | + getCurrentSignal(): Signal |
- * | + getSignalDuration(signal: Signal): int |
- * +-------------------------------------------+
- * 
- * ▲
- * |
- * |
- * +-------------------------------------------+
- * | Signal |
- * | (enum) |
- * +-------------------------------------------+
- * | + RED |
- * | + YELLOW |
- * | + GREEN |
- * +-------------------------------------------+
- * 
+
+UML Diagram
+
++-------------------------------------------+
+|             TrafficController              |
+|               (Singleton)                  |
++-------------------------------------------+
+| - instance: TrafficController              |
+| - roads: List<Road>                        |
+| - emergencyDetected: boolean               |
+| - emergencyRoad: Road                      |
++-------------------------------------------+
+| + getInstance(): TrafficController         |
+| + setRoads(roads: List<Road>): void        |
+| + startControl(): void                     |
+| + handleEmergency(emergencyRoad: Road): void|
++-------------------------------------------+
+
+                      ▲
+                      |
+                      |
++-------------------------------------------+
+|                  Road                     |
++-------------------------------------------+
+| - id: String                              |
+| - name: String                            |
+| - trafficLight: TrafficLight              |
++-------------------------------------------+
+| + setTrafficLight(light: TrafficLight): void |
+| + getTrafficLight(): TrafficLight          |
++-------------------------------------------+
+
+                      |
+                      |
+                      ▼
++-------------------------------------------+
+|               TrafficLight                |
++-------------------------------------------+
+| - id: String                              |
+| - currentSignal: Signal                   |
+| - redDuration: int                        |
+| - yellowDuration: int                     |
+| - greenDuration: int                      |
++-------------------------------------------+
+| + changeSignal(newSignal: Signal): void   |
+| + getCurrentSignal(): Signal              |
+| + getSignalDuration(signal: Signal): int  |
++-------------------------------------------+
+
+                      ▲
+                      |
+                      |
++-------------------------------------------+
+|                 Signal                     |
+|               (enum)                       |
++-------------------------------------------+
+| + RED                                     |
+| + YELLOW                                  |
+| + GREEN                                   |
++-------------------------------------------+
+
+================================================
+
+DB Diagram
+
++------------------------+
+|        Roads           |
++------------------------+
+| id (PK)                |
+| name                   |
++------------------------+
+
++------------------------+
+|     TrafficLights      |
++------------------------+
+| id (PK)                |
+| road_id (FK)           |
+| current_signal         |
+| red_duration           |
+| yellow_duration        |
+| green_duration         |
++------------------------+
+
++------------------------+
+|  TrafficLightCycles    |
++------------------------+
+| id (PK)                |
+| traffic_light_id (FK)  |
+| signal                 |
+| start_time (timestamp) |
+| end_time (timestamp)   |
++------------------------+
+
++------------------------+
+|   EmergencyEvents      |
++------------------------+
+| id (PK)                |
+| road_id (FK)           |
+| detected_at (timestamp)|
+| cleared_at (timestamp) |
++------------------------+
+
  */

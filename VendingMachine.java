@@ -138,6 +138,11 @@ class CoffeeMachine {
 
         if (payment.processPayment(amountPaid, coffee.getPrice())) {
             inventory.useIngredients(coffee.getRecipe());
+            // Check if ingredient is low 
+            Recipe ingrediantRecipe = coffee.getRecipe();
+            for (Ingredient ingredient : ingrediantRecipe.ingredients.keySet()) {
+                inventory.isLowOnIngredient(ingredient);
+            }
             System.out.println("Dispensing: " + type);
         }
     }
@@ -198,6 +203,8 @@ public class VendingMachine {
 
 
 /*
+
+UML Diagram 
 
 +------------------------------------------+
 |              VendingMachine              |
@@ -281,4 +288,49 @@ public class VendingMachine {
 | + SUGAR                                  |
 +------------------------------------------+
 
- */
+===============================================
+
+DB Diagram
+
++------------------------+
+|        Drinks          |
++------------------------+
+| id (PK)                |
+| name                   |
+| price                  |
++------------------------+
+
++------------------------+
+|      Ingredients       |
++------------------------+
+| id (PK)                |
+| name                   |
++------------------------+
+
++------------------------+
+|     Recipes            |
++------------------------+
+| id (PK)                |
+| drink_id (FK)          |
+| ingredient_id (FK)     |
+| quantity               |
++------------------------+
+
++------------------------+
+|      Inventory         |
++------------------------+
+| ingredient_id (PK, FK) |
+| available_quantity     |
++------------------------+
+
++------------------------+
+|      Orders            |
++------------------------+
+| id (PK)                |
+| drink_id (FK)          |
+| amount_paid            |
+| change_given           |
+| ordered_at (timestamp) |
++------------------------+
+
+*/
