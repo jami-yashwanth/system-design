@@ -316,3 +316,179 @@ public class Splitwise {
         splitwise.showBalances("u3");
     }
 }
+
+
+/*
+
+UML Diagram for Splitwise
+
++--------------------+
+|   SplitwiseUser    |
++--------------------+
+| - id: String       |
+| - name: String     |
+| - email: String    |
+| - balanceMap: Map<String, Double> |
++--------------------+
+| +getId(): String           |
+| +getName(): String         |
+| +getEmail(): String        |
+| +getBalanceMap(): Map<>    |
+| +addBalance(String, double)|
+| +getBalance(String): double|
++----------------------------+
+
+             ▲
+             |
+             |
++----------------------+
+|       Split          |  <<abstract>>
++----------------------+
+| - user: SplitwiseUser|
+| - amount: double     |
++----------------------+
+| +getUser(): User     |
+| +getAmount(): double |
+| +setAmount(double)   |
++----------------------+
+   ▲           ▲         ▲
+   |           |         |
++----------+ +-----------+ +----------+
+|EqualSplit| |PercentSplit| |ExactSplit|
+|----------| |------------| |----------|
+|          | |-percent: double|         |
++----------+ +-----------+ +----------+
+
++--------------------------+
+|        Expense           |
++--------------------------+
+| - id: String             |
+| - amount: double         |
+| - description: String    |
+| - paidBy: SplitwiseUser  |
+| - splits: List<Split>    |
++--------------------------+
+| +getSplits(): List<>     |
+| +getPaidBy(): User       |
+| +getAmount(): double     |
++--------------------------+
+
++--------------------------+
+|          Group           |
++--------------------------+
+| - id: String             |
+| - name: String           |
+| - members: List<User>    |
+| - expenses: List<Expense>|
++--------------------------+
+| +addMember(User)         |
+| +addExpense(Expense)     |
+| +getMembers(): List<>    |
++--------------------------+
+
++------------------------------+
+|         Transaction          |
++------------------------------+
+| - id: String                 |
+| - sender: SplitwiseUser      |
+| - receiver: SplitwiseUser    |
+| - amount: double             |
++------------------------------+
+
++---------------------------------------+
+|           SplitwiseService            |  <<Singleton>>
++---------------------------------------+
+| - users: Map<String, User>            |
+| - groups: Map<String, Group>          |
+| - transactions: List<Transaction>     |
++---------------------------------------+
+| +addUser(User)                        |
+| +createGroup(Group)                   |
+| +addExpense(groupId, amount, desc,    |
+|    paidBy, participants, splitType,   |
+|    values)                            |
+| +settleBalance(from, to, amount)      |
+| +showBalances(userId)                 |
+| +getTransactions(): List              |
++---------------------------------------+
+
++------------------+
+|   <<enum>>       |
+|   SplitType      |
++------------------+
+| EQUAL            |
+| PERCENT          |
+| EXACT            |
++------------------+
+
+=========================
+
+DB Diagram
+
++---------------------+
+|      users          |
++---------------------+
+| user_id     (PK)    |
+| name                |
+| email               |
++---------------------+
+
++---------------------+
+|      groups         |
++---------------------+
+| group_id    (PK)    |
+| name                |
++---------------------+
+
++-----------------------------+
+|     group_members           |
++-----------------------------+
+| group_id    (FK → groups)   |
+| user_id     (FK → users)    |
++-----------------------------+
+| PRIMARY KEY (group_id, user_id) |
++-----------------------------+
+
++-------------------------------+
+|         expenses              |
++-------------------------------+
+| expense_id     (PK)           |
+| group_id       (FK → groups)  |
+| paid_by        (FK → users)   |
+| description                    |
+| amount          (Decimal)     |
+| created_at      (Timestamp)   |
++-------------------------------+
+
++-------------------------------+
+|        expense_splits         |
++-------------------------------+
+| split_id        (PK)          |
+| expense_id      (FK → expenses)|
+| user_id         (FK → users)  |
+| amount          (Decimal)     |
+| split_type      (Enum)        |
+| percent         (Nullable)    |
++-------------------------------+
+
++-------------------------------+
+|       transactions            |
++-------------------------------+
+| transaction_id   (PK)         |
+| sender_id        (FK → users) |
+| receiver_id      (FK → users) |
+| amount           (Decimal)    |
+| settled_at       (Timestamp)  |
++-------------------------------+
+
++-------------------------------+
+|         balances              |
++-------------------------------+
+| user_id         (FK → users)  |
+| other_user_id   (FK → users)  |
+| amount           (Decimal)    |
++-------------------------------+
+| PRIMARY KEY (user_id, other_user_id) |
+
+
+ */
